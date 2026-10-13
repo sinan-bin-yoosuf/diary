@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ദിനചര്യ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDF1EE;--ink:#14323A;--mut:#5C7177;--card:#fff;--ac:#B8862B;--line:#D5DEDA;--ok:#1F6F5C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 'Noto Sans Malayalam',sans-serif}
+h1,h2{font-family:'Noto Serif Malayalam',serif;margin:.2em 0}
+.wrap{max-width:640px;margin:0 auto;padding:16px 16px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+input,textarea,button{font:inherit;color:inherit}
+input,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+textarea{min-height:160px;resize:vertical}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:10px 18px}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+nav{position:sticky;top:0;background:var(--bg);display:flex;gap:6px;padding:10px 16px;border-bottom:1px solid var(--line);z-index:5;max-width:640px;margin:0 auto}
+nav button{flex:1;border:0;background:transparent;padding:8px 4px;border-radius:10px;color:var(--mut)}
+nav button.on{background:var(--ink);color:#fff}
+.moods{display:flex;gap:8px}
+.moods button{flex:1;font-size:26px;padding:6px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.moods button.on{border-color:var(--ac);background:#FBF3E0}
+.hb{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;margin:6px 0}
+.hb i{width:24px;height:24px;border-radius:50%;border:2px solid var(--mut);flex:none;display:grid;place-items:center;font-style:normal;color:#fff;font-size:14px}
+.hb.on{background:#E8F3EF;border-color:var(--ok)}
+.hb.on i{background:var(--ok);border-color:var(--ok)}
+.row{display:flex;gap:8px;align-items:center}
+.bar{height:12px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar b{display:block;height:100%;background:var(--ok)}
+.mut{color:var(--mut);font-size:14px}
+.err{color:#A12D2D;min-height:1.5em}
+.stat{display:flex;gap:10px}.stat div{flex:1;text-align:center}.stat strong{display:block;font-size:26px;font-family:'Noto Serif Malayalam',serif}
+.entry{border-top:1px solid var(--line);padding:10px 0;white-space:pre-wrap}
+.hidden{display:none}
+@media print{nav,.noprint{display:none!important}body{background:#fff}.card{break-inside:avoid}}
+
+:root{--bg:#F3EDE0;--card:#FBF7EC;--ink:#2B2A33;--mut:#7A7466;--ac:#2F4B7C;--line:#DDD3BD;--ok:#3F7D58;--soft:#EFE6D2;--on:#E1EBDC}
+[data-th=green]{--bg:#E6EFE8;--card:#F6FBF7;--ink:#17352B;--mut:#5C7A6D;--ac:#1F6F5C;--line:#C9DACF;--ok:#1F6F5C;--soft:#DCE9E0;--on:#D3EBDD}
+[data-th=blue]{--bg:#E7EDF5;--card:#F7F9FD;--ink:#1B2B44;--mut:#5D6E88;--ac:#2B5C9E;--line:#CAD5E4;--ok:#2F7D6B;--soft:#DCE5F1;--on:#D6EBE4}
+[data-th=rose]{--bg:#F4E8EB;--card:#FFF8F9;--ink:#3A2229;--mut:#85616B;--ac:#A3405A;--line:#E5CDD3;--ok:#4C8A66;--soft:#F1DDE2;--on:#DDEDE3}
+[data-dark="1"]{--bg:#15171C;--card:#1F232A;--ink:#EAE6DA;--mut:#9CA3AD;--ac:#E0B25A;--line:#353B45;--ok:#5BB38C;--soft:#2A2F38;--on:#22382F;color-scheme:dark}
+body{font-family:'Noto Serif Malayalam',serif}
+html[data-big="1"] body{font-size:20px}
+input,textarea,.hb,.moods button{background:var(--card);color:var(--ink)}
+.card{background:var(--card);border-left:4px solid var(--ac);border-radius:8px;box-shadow:0 1px 0 var(--line)}
+.btn,nav button.on{background:var(--ac);color:var(--card)}
+.btn.alt{background:transparent;color:var(--ink)}
+.hb.on{background:var(--on)}
+.moods button.on{background:var(--soft);border-color:var(--ac)}
+textarea{background-image:repeating-linear-gradient(transparent,transparent 31px,var(--line) 31px,var(--line) 32px);background-attachment:local;line-height:32px;padding-top:6px}
+#dates{white-space:pre-line;margin:4px 0 10px;text-align:center}
+.sw{width:46px;height:46px;border-radius:50%;border:3px solid var(--line)}
+.sw.on{border-color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- ലോഗിൻ -->
+<div id="auth" class="wrap hidden">
+  <h1>ദിനചര്യ</h1>
+  <p class="mut">നിങ്ങളുടെ സ്വകാര്യ ഡയറിയും ദിനചര്യയും.</p>
+  <button class="btn alt langbtn" onclick="toggleLang()"></button>
+  <div class="card">
+    <label>യൂസർ നെയിം<input id="u" autocomplete="username" autocapitalize="none" placeholder="ഉദാ: ahmed_k"></label>
+    <label>പാസ്‌വേഡ്<input id="p" type="password" autocomplete="current-password" placeholder="കുറഞ്ഞത് 6 അക്ഷരം"></label>
+    <p class="err" id="aerr"></p>
+    <div class="row">
+      <button class="btn" id="abtn" onclick="submitAuth()">ലോഗിൻ</button>
+      <button class="btn alt" id="amode" onclick="toggleMode()">പുതിയ അക്കൗണ്ട്</button>
+    </div>
+  </div>
+</div>
+
+<!-- ആപ്പ് -->
+<div id="app" class="hidden">
+  <nav>
+    <button id="t-today" onclick="tab('today')">ഇന്ന്</button>
+    <button id="t-habits" onclick="tab('habits')">ശീലങ്ങൾ</button>
+    <button id="t-report" onclick="tab('report')">റിപ്പോർട്ട്</button>
+    <button id="t-look" onclick="tab('look')">രൂപം</button>
+  </nav>
+  <div class="wrap">
+
+    <section id="s-today">
+      <div id="dates" class="mut"></div>
+      <input type="date" id="date" onchange="loadDay(this.value)">
+      <div class="card"><h2>ഇന്നത്തെ മൂഡ്</h2><div class="moods" id="moods"></div></div>
+      <div class="card"><h2>ശീലങ്ങൾ</h2><div id="hlist"></div></div>
+      <div class="card"><h2>ഡയറി</h2><textarea id="text" placeholder="ഇന്ന് എന്താണ് ഉണ്ടായത്?"></textarea></div>
+      <div class="row"><button class="btn" onclick="saveDay()">സേവ് ചെയ്യുക</button><span class="mut" id="saved"></span></div>
+    </section>
+
+    <section id="s-habits" class="hidden">
+      <div class="card">
+        <h2>നിങ്ങളുടെ ശീലങ്ങൾ</h2>
+        <div id="hedit"></div>
+        <div class="row" style="margin-top:12px"><input id="newh" placeholder="പുതിയ ശീലം"><button class="btn" onclick="addHabit()">ചേർക്കുക</button></div>
+      </div>
+      <button class="btn alt" onclick="auth.signOut()">ലോഗൗട്ട്</button>
+    </section>
+
+    <section id="s-look" class="hidden">
+      <div class="card"><h2>തീം നിറം</h2><div class="row">
+        <button class="sw" data-t="paper" style="background:#F3EDE0" onclick="look.th='paper';applyLook()" aria-label="പേപ്പർ"></button>
+        <button class="sw" data-t="green" style="background:#1F6F5C" onclick="look.th='green';applyLook()" aria-label="പച്ച"></button>
+        <button class="sw" data-t="blue" style="background:#2B5C9E" onclick="look.th='blue';applyLook()" aria-label="നീല"></button>
+        <button class="sw" data-t="rose" style="background:#A3405A" onclick="look.th='rose';applyLook()" aria-label="റോസ്"></button>
+      </div></div>
+      <div class="card row" style="flex-wrap:wrap">
+        <button class="btn alt" id="dk" onclick="look.dark=!look.dark;applyLook()"></button>
+        <button class="btn alt" id="bg" onclick="look.big=!look.big;applyLook()"></button>
+        <button class="btn alt langbtn" onclick="toggleLang()"></button>
+      </div>
+      <p class="mut">ഈ ക്രമീകരണങ്ങൾ ഓരോ ഡിവൈസിലും വെവ്വേറെ സൂക്ഷിക്കും.</p>
+    </section>
+
+    <section id="s-report" class="hidden">
+      <div class="row noprint"><input type="month" id="mon" onchange="loadReport()"><button class="btn alt" onclick="window.print()">PDF</button></div>
+      <div id="rep"></div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== ഇവിടെ നിങ്ങളുടെ Firebase കോൺഫിഗ് ഒട്ടിക്കുക ===== */
+const CFG = {
+  apiKey: "AIzaSyA08d9xCfJgzBgADg8hVGoIDrdVHM8b7v8",
+  authDomain: "diary-4e0bf.firebaseapp.com",
+  projectId: "diary-4e0bf",
+  appId: "1:500056693327:web:1b7c87b7f3c4715322283a"
+};
+/* ======================================================== */
+
+firebase.initializeApp(CFG);
+const auth = firebase.auth(), db = firebase.firestore();
+const $ = s => document.querySelector(s);
+const DEF = ["നമസ്കാരം","ഖുർആൻ പാരായണം","ഹദീസ് പഠനം","വായന","വ്യായാമം"].map((n,i)=>({id:"h"+i,name:n}));
+const MOODS = ["😞","😕","😐","🙂","😄"];
+let uid, habits = [], st = {mood:0,done:[],text:""}, cur, mode = "login";
+
+let lang = "ml"; try{ lang = localStorage.getItem("dinacharya-lang") || "ml"; }catch(e){}
+const nk = s => s.replace(/[\u200c\u200d]/g,"").trim();
+const EN = {}; Object.entries({
+"ദിനചര്യ":"Daily Routine","നിങ്ങളുടെ സ്വകാര്യ ഡയറിയും ദിനചര്യയും.":"Your private diary and daily routine.",
+"യൂസർ നെയിം":"Username","പാസ്‌വേഡ്":"Password","ഉദാ: ahmed_k":"e.g. ahmed_k","കുറഞ്ഞത് 6 അക്ഷരം":"At least 6 characters",
+"ലോഗിൻ":"Log in","പുതിയ അക്കൗണ്ട്":"New account","അക്കൗണ്ട് ഉണ്ടാക്കുക":"Create account","ലോഗിൻ ചെയ്യുക":"Log in",
+"ഇന്ന്":"Today","ശീലങ്ങൾ":"Habits","റിപ്പോർട്ട്":"Report","രൂപം":"Theme",
+"ഇന്നത്തെ മൂഡ്":"Today's mood","ഡയറി":"Diary","ഇന്ന് എന്താണ് ഉണ്ടായത്?":"What happened today?","സേവ് ചെയ്യുക":"Save","സേവ് ചെയ്തു ✓":"Saved ✓",
+"നിങ്ങളുടെ ശീലങ്ങൾ":"Your habits","പുതിയ ശീലം":"New habit","ചേർക്കുക":"Add","ലോഗൗട്ട്":"Log out","നീക്കുക":"Remove",
+"തീം നിറം":"Theme colour","പേപ്പർ":"Paper","പച്ച":"Green","നീല":"Blue","റോസ്":"Rose",
+"ഡാർക്ക് മോഡ്: ഓൺ":"Dark mode: on","ഡാർക്ക് മോഡ്: ഓഫ്":"Dark mode: off","വലിയ അക്ഷരം: ഓൺ":"Large text: on","വലിയ അക്ഷരം: ഓഫ്":"Large text: off",
+"ഈ ക്രമീകരണങ്ങൾ ഓരോ ഡിവൈസിലും വെവ്വേറെ സൂക്ഷിക്കും.":"These settings are saved separately on each device.",
+"മൂഡ്":"Mood","ശീലങ്ങൾ ടാബിൽ നിന്ന് ചേർക്കുക.":"Add habits from the Habits tab.",
+"ഈ ശീലം നീക്കണോ? പഴയ രേഖകൾ നഷ്ടപ്പെടില്ല.":"Remove this habit? Past records are kept.",
+"നമസ്കാരം":"Prayer","ഖുർആൻ പാരായണം":"Quran recitation","ഹദീസ് പഠനം":"Hadith study","വായന":"Reading","വ്യായാമം":"Exercise",
+"യൂസർ നെയിം: 3–20 അക്ഷരം, ഇംഗ്ലീഷ് അക്ഷരം/അക്കം/_/. മാത്രം.":"Username: 3–20 characters; English letters, digits, _ or . only.",
+"പാസ്‌വേഡ് കുറഞ്ഞത് 6 അക്ഷരം വേണം.":"Password must be at least 6 characters.",
+"ഈ യൂസർ നെയിം നിലവിലുണ്ട്.":"This username is already taken.","യൂസർ നെയിം അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്.":"Wrong username or password.",
+"പാസ്‌വേഡ് ദുർബലമാണ്.":"Password is too weak.","പിശക്:":"Error:",
+"ഈ മാസം രേഖകളില്ല.":"No entries this month.","ഡയറി ദിവസങ്ങൾ":"Diary days","ശരാശരി മൂഡ് (5-ൽ)":"Average mood (out of 5)","ദിവസം":"days",
+"മൂഡ് ഗ്രാഫ്":"Mood graph","മൂഡ് രേഖപ്പെടുത്തിയിട്ടില്ല.":"No mood recorded.","സംഗ്രഹം":"Summary",
+"ഏറ്റവും സ്ഥിരമായി പാലിച്ച ശീലം:":"Most consistent habit:","ഏറ്റവും കുറവ്:":"Least consistent:",
+"ഡയറി എൻട്രികൾ":"Diary entries","എഴുത്തുകളില്ല.":"No writing yet."
+}).forEach(([k,v]) => EN[nk(k)] = v);
+const t = s => lang==="en" && EN[nk(s)]!==undefined ? EN[nk(s)] : s;
+function trDOM(){
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {acceptNode:n => n.parentNode.closest("script,.langbtn") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT});
+  let n;
+  while(n = w.nextNode()){
+    if(n.__ml===undefined){ if(!nk(n.nodeValue)) continue; n.__ml = n.nodeValue; }
+    const k = nk(n.__ml);
+    if(EN[k]!==undefined) n.nodeValue = lang==="en" ? n.__ml.replace(n.__ml.trim(), () => EN[k]) : n.__ml;
+  }
+  document.querySelectorAll("[placeholder],[aria-label]").forEach(e => ["placeholder","aria-label"].forEach(a => {
+    if(!e.hasAttribute(a)) return;
+    const dk = "data-ml-"+a; if(!e.hasAttribute(dk)) e.setAttribute(dk, e.getAttribute(a));
+    e.setAttribute(a, t(e.getAttribute(dk)));
+  }));
+  document.title = t("ദിനചര്യ"); document.documentElement.lang = lang;
+  document.querySelectorAll(".langbtn").forEach(b => b.textContent = lang==="en" ? "മലയാളം" : "English");
+}
+function toggleLang(){
+  lang = lang==="en" ? "ml" : "en";
+  try{ localStorage.setItem("dinacharya-lang", lang); }catch(e){}
+  trDOM(); authLabels(); applyLook();
+  if(uid){ st.text = $("#text").value; setDates(cur); renderToday(); renderHabitEdit(); if(!$("#s-report").classList.contains("hidden")) loadReport(); }
+}
+const PK = "dinacharya-look";
+let look = {th:"paper",dark:false,big:false};
+try{ Object.assign(look, JSON.parse(localStorage.getItem(PK)||"{}")); }catch(e){}
+function applyLook(){
+  const r = document.documentElement;
+  r.dataset.th = look.th; r.dataset.dark = look.dark?"1":""; r.dataset.big = look.big?"1":"";
+  try{ localStorage.setItem(PK, JSON.stringify(look)); }catch(e){}
+  document.querySelectorAll(".sw").forEach(b=>b.classList.toggle("on", b.dataset.t===look.th));
+  $("#dk").textContent = t(look.dark ? "ഡാർക്ക് മോഡ്: ഓൺ" : "ഡാർക്ക് മോഡ്: ഓഫ്");
+  $("#bg").textContent = t(look.big ? "വലിയ അക്ഷരം: ഓൺ" : "വലിയ അക്ഷരം: ഓഫ്");
+}
+applyLook();
+function setDates(d){
+  const t = new Date(d+"T12:00:00"); let g="", h="";
+  try{ g = new Intl.DateTimeFormat(lang==="en"?"en-IN":"ml-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(t); }catch(e){}
+  try{ h = new Intl.DateTimeFormat((lang==="en"?"en-IN":"ml-IN")+"-u-ca-islamic-umalqura",{day:"numeric",month:"long",year:"numeric"}).format(t); }catch(e){}
+  $("#dates").textContent = g + (h ? "\n"+h : "");
+}
+const pad = n => String(n).padStart(2,"0");
+const today = () => { const d = new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---- ലോഗിൻ ---- */
+function toggleMode(){ mode = mode==="login" ? "register" : "login"; authLabels(); $("#aerr").textContent = ""; }
+function authLabels(){
+  $("#abtn").textContent = t(mode==="login" ? "ലോഗിൻ" : "അക്കൗണ്ട് ഉണ്ടാക്കുക");
+  $("#amode").textContent = t(mode==="login" ? "പുതിയ അക്കൗണ്ട്" : "ലോഗിൻ ചെയ്യുക");
+}
+async function submitAuth(){
+  const u = $("#u").value.trim().toLowerCase(), p = $("#p").value;
+  if(!/^[a-z0-9_.]{3,20}$/.test(u)) return $("#aerr").textContent = t("യൂസർ നെയിം: 3–20 അക്ഷരം, ഇംഗ്ലീഷ് അക്ഷരം/അക്കം/_/. മാത്രം.");
+  if(p.length<6) return $("#aerr").textContent = t("പാസ്‌വേഡ് കുറഞ്ഞത് 6 അക്ഷരം വേണം.");
+  const email = u+"@dinacharya.app";
+  try{
+    if(mode==="login") await auth.signInWithEmailAndPassword(email,p);
+    else await auth.createUserWithEmailAndPassword(email,p);
+  }catch(e){
+    const m = {"auth/email-already-in-use":"ഈ യൂസർ നെയിം നിലവിലുണ്ട്.","auth/invalid-credential":"യൂസർ നെയിം അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്.","auth/weak-password":"പാസ്‌വേഡ് ദുർബലമാണ്."};
+    $("#aerr").textContent = (m[e.code] ? t(m[e.code]) : t("പിശക്:")+" "+e.code);
+  }
+}
+auth.onAuthStateChanged(async u => {
+  if(!u){ uid=null; $("#app").classList.add("hidden"); $("#auth").classList.remove("hidden"); return; }
+  uid = u.uid; cur = today();
+  const h = await db.doc(`users/${uid}/meta/habits`).get();
+  habits = h.exists ? h.data().list : DEF.slice();
+  if(!h.exists) saveHabits();
+  $("#auth").classList.add("hidden"); $("#app").classList.remove("hidden");
+  $("#mon").value = cur.slice(0,7);
+  tab("today"); loadDay(cur);
+});
+
+/* ---- ടാബുകൾ ---- */
+function tab(n){
+  ["today","habits","report","look"].forEach(x => {
+    $("#s-"+x).classList.toggle("hidden", x!==n);
+    $("#t-"+x).classList.toggle("on", x===n);
+  });
+  if(n==="habits") renderHabitEdit();
+  if(n==="report") loadReport();
+}
+
+/* ---- ഇന്ന് ---- */
+async function loadDay(d){
+  cur = d; $("#date").value = d; setDates(d); $("#saved").textContent = "";
+  const s = await db.doc(`users/${uid}/days/${d}`).get();
+  st = s.exists ? Object.assign({mood:0,done:[],text:""}, s.data()) : {mood:0,done:[],text:""};
+  renderToday();
+}
+function renderToday(){
+  $("#moods").innerHTML = MOODS.map((e,i)=>`<button class="${st.mood===i+1?"on":""}" onclick="st.mood=${i+1};renderToday()" aria-label="${t("മൂഡ്")} ${i+1}">${e}</button>`).join("");
+  $("#hlist").innerHTML = habits.map(h=>`<button class="hb ${st.done.includes(h.id)?"on":""}" onclick="toggleH('${h.id}')"><i>${st.done.includes(h.id)?"✓":""}</i>${esc(t(h.name))}</button>`).join("") || '<p class="mut">'+t("ശീലങ്ങൾ ടാബിൽ നിന്ന് ചേർക്കുക.")+'</p>';
+  $("#text").value = st.text;
+}
+function toggleH(id){
+  st.text = $("#text").value;
+  st.done = st.done.includes(id) ? st.done.filter(x=>x!==id) : st.done.concat(id);
+  renderToday();
+}
+async function saveDay(){
+  st.text = $("#text").value;
+  await db.doc(`users/${uid}/days/${cur}`).set(st);
+  $("#saved").textContent = t("സേവ് ചെയ്തു ✓");
+}
+
+/* ---- ശീലങ്ങൾ ---- */
+const saveHabits = () => db.doc(`users/${uid}/meta/habits`).set({list:habits});
+function renderHabitEdit(){
+  $("#hedit").innerHTML = habits.map((h,i)=>`<div class="row" style="margin:6px 0"><span style="flex:1">${esc(t(h.name))}</span><button class="btn alt" onclick="delHabit(${i})">${t("നീക്കുക")}</button></div>`).join("");
+}
+function addHabit(){
+  const n = $("#newh").value.trim(); if(!n) return;
+  habits.push({id:"h"+Date.now(), name:n}); $("#newh").value = "";
+  saveHabits(); renderHabitEdit(); renderToday();
+}
+function delHabit(i){
+  if(!confirm(t("ഈ ശീലം നീക്കണോ? പഴയ രേഖകൾ നഷ്ടപ്പെടില്ല."))) return;
+  habits.splice(i,1); saveHabits(); renderHabitEdit(); renderToday();
+}
+
+/* ---- റിപ്പോർട്ട് ---- */
+async function loadReport(){
+  const m = $("#mon").value || today().slice(0,7);
+  const q = await db.collection(`users/${uid}/days`).orderBy(firebase.firestore.FieldPath.documentId()).startAt(m+"-01").endAt(m+"-31").get();
+  const rows = q.docs.map(d => ({d:d.id, ...d.data()}));
+  const [y,mo] = m.split("-").map(Number), dim = new Date(y,mo,0).getDate();
+  const span = m===today().slice(0,7) ? Number(today().slice(8)) : dim;
+  if(!rows.length){ $("#rep").innerHTML = '<div class="card">'+t("ഈ മാസം രേഖകളില്ല.")+'</div>'; return; }
+
+  const mr = rows.filter(r=>r.mood>0);
+  const avg = mr.length ? (mr.reduce((a,r)=>a+r.mood,0)/mr.length).toFixed(1) : "–";
+  const hp = habits.map(h => {
+    const c = rows.filter(r=>(r.done||[]).includes(h.id)).length;
+    return {n:h.name, c, p:Math.round(c/span*100)};
+  });
+  const score = r => (r.done||[]).filter(id=>habits.some(h=>h.id===id)).length;
+  const best = rows.reduce((a,r)=>score(r)>score(a)?r:a), worst = rows.reduce((a,r)=>score(r)<score(a)?r:a);
+  const top = hp.slice().sort((a,b)=>b.p-a.p)[0], low = hp.slice().sort((a,b)=>a.p-b.p)[0];
+
+  const pts = mr.map(r => { const dd = Number(r.d.slice(8)); return [10+(dd-1)/Math.max(dim-1,1)*280, 90-(r.mood-1)/4*80]; });
+  const svg = `<svg viewBox="0 0 300 100" width="100%" role="img" aria-label="${t("മൂഡ് ഗ്രാഫ്")}">
+    <g style="stroke:var(--line)">${[10,30,50,70,90].map(v=>`<line x1="10" x2="290" y1="${v}" y2="${v}"/>`).join("")}</g>
+    <polyline fill="none" style="stroke:var(--ac)" stroke-width="2.5" points="${pts.map(p=>p.join(",")).join(" ")}"/>
+    ${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" style="fill:var(--ink)"/>`).join("")}</svg>`;
+
+  $("#rep").innerHTML = `
+  <div class="card stat"><div><strong>${rows.length}</strong><span class="mut">${t("ഡയറി ദിവസങ്ങൾ")}</span></div><div><strong>${avg}</strong><span class="mut">${t("ശരാശരി മൂഡ് (5-ൽ)")}</span></div></div>
+  <div class="card"><h2>${t("ശീലങ്ങൾ")}</h2>${hp.map(h=>`<div style="margin:10px 0"><div class="row"><span style="flex:1">${esc(h.n)}</span><span class="mut">${h.c}/${span} ${t("ദിവസം")} · ${h.p}%</span></div><div class="bar"><b style="width:${h.p}%"></b></div></div>`).join("")}</div>
+  <div class="card"><h2>${t("മൂഡ് ഗ്രാഫ്")}</h2>${pts.length?svg:'<p class="mut">'+t("മൂഡ് രേഖപ്പെടുത്തിയിട്ടില്ല.")+'</p>'}</div>
+  <div class="card"><h2>${t("സംഗ്രഹം")}</h2>
+    <p>${t("ഏറ്റവും സ്ഥിരമായി പാലിച്ച ശീലം:")} <b>${top?esc(t(top.n)):"–"}</b> (${top?top.p:0}%). ${t("ഏറ്റവും കുറവ്:")} <b>${low?esc(t(low.n)):"–"}</b> (${low?low.p:0}%).</p>
+    <p>${lang==="en" ? `Best day: ${+best.d.slice(8)} (${score(best)} habits). Lowest day: ${+worst.d.slice(8)} (${score(worst)} habits).` : `ഏറ്റവും മികച്ച ദിവസം ${best.d.slice(8)}-ാം തീയതി (${score(best)} ശീലങ്ങൾ), ഏറ്റവും കുറവ് ${worst.d.slice(8)}-ാം തീയതി (${score(worst)} ശീലങ്ങൾ).`}</p></div>
+  <div class="card"><h2>${t("ഡയറി എൻട്രികൾ")}</h2>${rows.filter(r=>r.text).map(r=>`<div class="entry"><b>${lang==="en" ? "Day "+(+r.d.slice(8)) : r.d.slice(8)+"-ാം തീയതി"}</b> ${r.mood?MOODS[r.mood-1]:""}\n${esc(r.text)}</div>`).join("") || '<p class="mut">'+t("എഴുത്തുകളില്ല.")+'</p>'}</div>`;
+}
+trDOM(); authLabels();
+</script>
+</body>
+</html>
